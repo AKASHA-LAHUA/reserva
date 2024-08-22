@@ -318,6 +318,7 @@
         });
 
         // Selecciona la imagen
+// Selecciona la imagen
 const image = document.querySelector('.box.img img');
 
 // Función para crear el efecto de latido
@@ -341,13 +342,6 @@ function heartbeatEffect() {
         image.style.filter = `drop-shadow(0 2px ${shadowIntensity}px rgba(242, 226, 221, 0.7))`;
     }, 200); // Ajusta el intervalo de tiempo para cambiar la velocidad del latido
 }
-
-// Inicia el efecto cuando la página se carga
-window.onload = function() {
-    image.classList.add('fade-in');
-    heartbeatEffect();
-};
-
 
 // Lista de palabras para el ciclo
 const words = [
@@ -391,14 +385,18 @@ function updateText() {
     }, 1000); // Espera 1 segundo antes de cambiar el texto
 }
 
-// Configura el intervalo para cambiar el texto cada 3 segundos
-setInterval(updateText, 3000);
-
-// Inicia el ciclo de texto al cargar la página
+// Combina todas las funciones de inicialización en una sola
 window.onload = function() {
+    // Inicia el efecto de latido en la imagen
+    image.classList.add('fade-in');
+    heartbeatEffect();
+    
+    // Inicia el ciclo de texto
     textElement.style.transition = 'opacity 1s ease'; // Añade transición de opacidad
     updateText(); // Llama la primera vez para iniciar el efecto
+    setInterval(updateText, 3000); // Configura el intervalo para cambiar el texto cada 3 segundos
 };
+
 
 
     </script>
