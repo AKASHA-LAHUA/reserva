@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKASHA LAHUA | Centro de Sanación Integral</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            font-family: 'Raleway', sans-serif;
+            position: relative;
+        }
+
+        .slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        .texto-arriba {
+            position: absolute;
+            top: 5%;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5rem;
+            z-index: 2;
+        }
+
+        .box.img {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .box.img img {
+            width: 100%;
+            max-width: 350px;
+            opacity: 0;
+            transition: opacity 2s ease;
+            filter: drop-shadow(0 2px 5px rgba(242, 226, 221, 0.7));
+        }
+
+        .box.img img.fade-in {
+            opacity: 1;
+        }
+
+        .burbuja-container {
+            bottom: 10%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            gap: 10px;
+        }
+
+        .burbuja {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff0077, #ffcc00);
+            color: white;
+            font-size: 2rem;
+            text-align: center;
+            line-height: 60px;
+            cursor: pointer;
+            transition: all 1s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .burbuja p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .burbuja:hover {
+            transform: scale(1.2);
+        }
+
+        .burbuja span {
+            display: none;
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .burbuja:hover span {
+            display: block;
+        }
+
+        /* Specific bubbles for gradient colors */
+        .burbuja[data-item="Biomagnetismo médico"] {
+            background: linear-gradient(45deg, #ff0077, #ffcc00);
+        }
+
+        .burbuja[data-item="Baño de Cajón"] {
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+        }
+
+        .burbuja[data-item="Baño Terapéutico"] {
+            background: linear-gradient(45deg, #f7971e, #ffd200);
+        }
+
+        .burbuja[data-item="Bioenergética"] {
+            background: linear-gradient(45deg, #00b09b, #96c93d);
+        }
+
+        .burbuja[data-item="Reflexología"] {
+            background: linear-gradient(45deg, #8e2de2, #4a00e0);
+        }
+
+        /* Popup styling */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            z-index: 3;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px;
+            width: 90%;
+            height: 80%;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+        }
+
+        .popup-content h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        .popup-content p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: white;
+        }
+
+        .popup-content button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 25px;
+        }
+
+        .popup-content button:hover {
+            background-color: #45a049;
+        }
+
+        .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 25px;
+    line-height: 30px;
+    text-align: center;
+    margin-top: -26px !important;
+    padding: 1px !important;
+}
+
+.texto-abajo h2 {
+    opacity: 0;
+    transition: opacity 1s ease;
+    color: white;
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+    </style>
+</head>
+<body>
+
+    <section class="slider">
+        <div class="video-container">
+            <video autoplay loop muted playsinline>
+                <source src="fondoslider.mp4" type="video/mp4">
+                Tu navegador no soporta videos.
+            </video>
+        </div>
+        <div class="texto-arriba">
+            <h1>AKASHA</h1>
+        </div>
+        <div class="box img">
+            <img src="mamita.png" alt="Imagen" id="main-image" class="fade-in">
+        </div>
+        <div class="texto-abajo">
+            <h2></h2>
+        </div>
+        <div class="burbuja-container">
+            <div class="burbuja" data-item="Biomagnetismo médico">
+                <p>L</p>
+                <span>Biomagnetismo médico</span>
+            </div>
+            <div class="burbuja" data-item="Baño de Cajón">
+                <p>A</p>
+                <span>Baño de Cajón</span>
+            </div>
+            <div class="burbuja" data-item="Baño Terapéutico">
+                <p>H</p>
+                <span>Baño Terapéutico</span>
+            </div>
+            <div class="burbuja" data-item="Bioenergética">
+                <p>U</p>
+                <span>Bioenergética</span>
+            </div>
+            <div class="burbuja" data-item="Reflexología">
+                <p>A</p>
+                <span>Reflexología</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="popup-overlay" id="popup">
+        <div class="popup-content">
+            <button class="close-popup" id="closePopup">X</button>
+            <h2>Paquete de Terapias Complementarias de Akasha Lahua</h2>
+            <p>Revitaliza tu cuerpo y mente con nuestro exclusivo paquete de bienestar. Incluye Biomagnetismo médico, Baños de Cajón, Baño Terapéutico, Bioenergética y Reflexología.</p>
+            <p>Benefíciate de las propiedades curativas de la Termoterapia con Baños de Cajón, que ayudan a limpiar la sangre, mejorar la circulación, combatir problemas respiratorios, reducir el colesterol, bajar de peso y recuperar el sueño de forma natural.</p>
+            <p>Descubre el poder de la sanación integral en Akasha Lahua y renueva tu salud desde el interior. ¡Reserva tu sesión hoy!</p>
+            <button>Reservar Sesión</button>
+        </div>
+    </div>
+
+    <script>
+        const bubbles = document.querySelectorAll('.burbuja');
+        const popup = document.getElementById('popup');
+        const closePopup = document.getElementById('closePopup');
+
+        bubbles.forEach(bubble => {
+            bubble.addEventListener('click', function() {
+                // Move bubble to the top-left corner
+                this.style.position = 'fixed';
+                this.style.top = '20px';
+                this.style.left = '20px';
+                this.style.transform = 'none';
+                this.style.transition = 'all 0.5s ease';
+
+                // Show popup
+                popup.style.display = 'flex';
+            });
+        });
+
+        closePopup.addEventListener('click', function() {
+            popup.style.display = 'none';
+            // Reset bubble position
+            bubbles.forEach(bubble => {
+                bubble.style.position = 'relative';
+                bubble.style.top = 'auto';
+                bubble.style.left = 'auto';
+                bubble.style.transform = '';
+            });
+        });
+
+        // Selecciona la imagen
+const image = document.querySelector('.box.img img');
+
+// Función para crear el efecto de latido
+function heartbeatEffect() {
+    let growing = true;
+    let shadowIntensity = 5;
+
+    setInterval(() => {
+        if (growing) {
+            shadowIntensity += 1;
+            if (shadowIntensity >= 10) {
+                growing = false;
+            }
+        } else {
+            shadowIntensity -= 1;
+            if (shadowIntensity <= 5) {
+                growing = true;
+            }
+        }
+
+        image.style.filter = `drop-shadow(0 2px ${shadowIntensity}px rgba(242, 226, 221, 0.7))`;
+    }, 200); // Ajusta el intervalo de tiempo para cambiar la velocidad del latido
+}
+
+// Inicia el efecto cuando la página se carga
+window.onload = function() {
+    image.classList.add('fade-in');
+    heartbeatEffect();
+};
+
+
+// Lista de palabras para el ciclo
+const words = [
+    "Relajación",
+    "Revitalización",
+    "Sanación",
+    "Equilibrio",
+    "Rendimiento",
+    "Armonía",
+    "Transformación",
+    "Renovación",
+    "Vitalidad",
+    "Energización",
+    "Liberación",
+    "Renacimiento",
+    "Purificación",
+    "Tranquilidad",
+    "Rejuvenecimiento",
+    "Desintoxicación",
+    "Revitalización",
+    "Reequilibrio",
+    "Restauración",
+    "Bienestar"
+];
+
+// Selecciona el elemento h2 donde se mostrará el texto
+const textElement = document.querySelector('.texto-abajo h2');
+
+let wordIndex = 0; // Índice inicial de la lista de palabras
+
+// Función para actualizar el texto con un efecto de desvanecimiento
+function updateText() {
+    textElement.style.opacity = '0'; // Oculta el texto
+
+    setTimeout(() => {
+        textElement.textContent = words[wordIndex]; // Cambia el contenido del texto
+        textElement.style.opacity = '1'; // Muestra el texto
+
+        // Mueve al siguiente índice en la lista de palabras
+        wordIndex = (wordIndex + 1) % words.length;
+    }, 1000); // Espera 1 segundo antes de cambiar el texto
+}
+
+// Configura el intervalo para cambiar el texto cada 3 segundos
+setInterval(updateText, 3000);
+
+// Inicia el ciclo de texto al cargar la página
+window.onload = function() {
+    textElement.style.transition = 'opacity 1s ease'; // Añade transición de opacidad
+    updateText(); // Llama la primera vez para iniciar el efecto
+};
+
+
+    </script>
+
+</body>
+</html>
